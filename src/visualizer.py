@@ -56,4 +56,3 @@ def plot_language_distribution(language_counts: list[tuple[str, int]], output: s
     ax.xticks(rotation = 45, ha = 'right')
     plt.savefig(f'{output}.png', dpi = 150, bbox_inches = "tight")
     plt.close(fig)
-
