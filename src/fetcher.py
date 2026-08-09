@@ -13,11 +13,6 @@ import requests
 import os
 from src.exceptions import ApiError
 
-# class ApiError(Exception):
-#     def __init__(self, status_code, message=""):
-#         self.status_code = status_code
-#         self.message = message
-#         super().__init__(f'ApiError:[{status_code}:{message}]')
 
 def fetch_top_repos(top: int)->list[dict]:
     GITHUB_API = "https://api.github.com/search/repositories"
@@ -25,6 +20,9 @@ def fetch_top_repos(top: int)->list[dict]:
     params = {"q": "language:python", "sort": "stars", "per_page": top}
     headers = {"Authorization": f'token {GITHUB_TOKEN}'}
 
+    if not GITHUB_TOKEN:
+        raise ApiError(0, '缺少GITHUB_TOKEN')
+    
     try:
         resp = requests.get(GITHUB_API, params=params, headers=headers, timeout=10)
         if not(200 <= resp.status_code < 300):
