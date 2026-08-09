@@ -3,3 +3,8 @@
 
 # env
 .env
+
+#png/pdf/svg
+*.pdf
+*.png
+*.svg
