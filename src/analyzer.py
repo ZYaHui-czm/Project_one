@@ -1,7 +1,7 @@
 import pandas as pd
 import logging
 from collections import Counter
-from src.fetcher import fetch_top_repos
+
 
 logging.basicConfig(
     level=logging.INFO,

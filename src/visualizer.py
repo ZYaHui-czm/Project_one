@@ -53,6 +53,6 @@ def plot_language_distribution(language_counts: list[tuple[str, int]], output: s
     ax.set_ylabel("仓库数")
     ax.grid(axis='y', alpha = 0.3)
 
-    ax.xticks(rotation = 45, ha = 'right')
+    ax.set_xticklabels(names, rotation = 45, ha = 'right')
     plt.savefig(f'{output}.png', dpi = 150, bbox_inches = "tight")
     plt.close(fig)

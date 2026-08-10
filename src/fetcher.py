@@ -20,6 +20,7 @@ def fetch_top_repos(top: int)->list[dict]:
     params = {"q": "language:python", "sort": "stars", "per_page": top}
     headers = {"Authorization": f'token {GITHUB_TOKEN}'}
 
+    # 空TOKEN检查
     if not GITHUB_TOKEN:
         raise ApiError(0, '缺少GITHUB_TOKEN')
     
