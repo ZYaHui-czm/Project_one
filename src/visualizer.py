@@ -3,7 +3,7 @@
 import matplotlib
 matplotlib.use("Agg")
 
-from config import FIGSIZE_DEFAULT, SAVE_KW
+from src.config import FIGSIZE_DEFAULT, SAVE_KW
 import matplotlib.pyplot as plt
 
 def plot_stars_top(df, top_n: int, output: str)->None:

@@ -1,6 +1,6 @@
 import pandas as pd
 import logging
-from collections import Counter
+
 
 
 logging.basicConfig(
@@ -10,17 +10,13 @@ logging.basicConfig(
     filemode="w"
 )
 
-def analyze_repos(items: list[dict])->dict:
-    logging.info("analyze_repo开始")
+def analyze_repos(items: list[dict]):
+    logging.info("analyze_repo start")
 
+    # 空值检查
     if not items:
-        logging.warning("items参数为空")
-        return {
-            "avg_stars": 0.0,
-            "max_stars_name": '',
-            "top_language": ''
-        }
-
+        logging.warning("items为空")
+        return pd.DataFrame(columns=['name', 'stars','forks', 'language', 'created_at'])
     rows = []
     for item in items:
         rows.append({
@@ -31,20 +27,9 @@ def analyze_repos(items: list[dict])->dict:
             "created_at": item["created_at"]
         })
 
-    languages = [r["language"] for r in rows]
-    count_languages = Counter(languages)
-
     df = pd.DataFrame(rows)
-    avg_star = round(df["stars"].mean(), 1)
-    max_stars_name = max(rows, key=lambda x: x["stars"])["name"]
-    top_language = count_languages.most_common(1)[0][0]
 
-    analyze_dict = {
-        "avg_stars": avg_star,
-        "max_stars_name": max_stars_name,
-        "top_language": top_language
-    }
 
-    logging.info("analyze_repo完成")
+    logging.info("analyze_repo completed")
 
-    return analyze_dict
+    return df

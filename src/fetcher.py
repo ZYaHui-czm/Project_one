@@ -13,16 +13,22 @@ import requests
 import os
 from src.exceptions import ApiError
 
-
+'''数据获取模块'''
 def fetch_top_repos(top: int)->list[dict]:
+    if top <= 0:
+        raise ValueError(f"top必须是正整数")
+    if top > 100:
+        raise ValueError(f"GitHub API 每页最大条数不能超过100")
+
     GITHUB_API = "https://api.github.com/search/repositories"
     GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    # 空TOKEN检查,未配置TOKEN则匿名调用公开API
+    headers = {"Accept": "application/vnd.github+json"}
+    if GITHUB_TOKEN:
+        headers = {"Authorization": f'Bearer {GITHUB_TOKEN}'}
+    
     params = {"q": "language:python", "sort": "stars", "per_page": top}
-    headers = {"Authorization": f'token {GITHUB_TOKEN}'}
 
-    # 空TOKEN检查
-    if not GITHUB_TOKEN:
-        raise ApiError(0, '缺少GITHUB_TOKEN')
     
     try:
         resp = requests.get(GITHUB_API, params=params, headers=headers, timeout=10)
@@ -34,5 +40,16 @@ def fetch_top_repos(top: int)->list[dict]:
     except requests.exceptions.ConnectionError:
         raise ApiError(0, "网络连接失败")
 
-    data = resp.json() 
-    return data["items"]
+    data = resp.json()
+    items = data["items"]
+    # 将 GitHub API 字段名转换为下游模块期望的格式
+    return [
+        {
+            "name": item["full_name"],
+            "stars": item["stargazers_count"],
+            "forks": item["forks_count"],
+            "language": item["language"],
+            "created_at": item["created_at"],
+        }
+        for item in items
+    ]

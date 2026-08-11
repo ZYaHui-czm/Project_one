@@ -8,3 +8,9 @@
 *.pdf
 *.png
 *.svg
+
+# 缓存
+__pycache__/
+
+# 日志
+*.log
