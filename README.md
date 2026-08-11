@@ -32,6 +32,8 @@ cp .env.example .env
 ```env
 GITHUB_TOKEN = xxx
 
+```
 #### 运行项目
 ```
 python -m main
+```
